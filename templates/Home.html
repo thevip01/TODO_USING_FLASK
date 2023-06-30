@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends 'includes/base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    {% with message =  get_flashed_messages()%}
+    {% if message%}
+      {% for msg in message %}
+        <p class="text-info text-center">{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form action="{%if Data %}/update/{{Data.sno}}{% else %}/{% endif %}" method="POST">
+        <h2 class="text-center">{%if Data %} UPDATE TODO {% else %} ADD TODO {% endif %}</h2>
+        <div class="form-group row mb-2">
+          <label for="title" class="col-sm-2 col-form-label">Title</label>
+          <div class="col-sm-10">
+            <input type="text" name="title" value="{%if Data %}{{Data.title}}{% endif %}" placeholder="Title" class="form-control" id="title">
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <label for="description" class="col-sm-2 col-form-label">Description</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" value="{%if Data %}{{Data.description}}{% endif %}" id="description" name="description" placeholder="Description">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">{%if Data %}UPDATE {% else %} ADD {% endif %}</button>
+      </form>
+    {%if ToDoList %}
+        <h1 class="text-center mb-3">To Do List</h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">#</th>
+                <th scope="col">#</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for todo in ToDoList%}
+                <tr>
+                    <td>{{todo.sno}}</td>
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.description}}</td>
+                    <td>{{todo.date_created}}</td>
+                    <td><a href="/update/{{todo.sno}}" class="btn btn-warning" role="button" aria-pressed="true">EDIT</a></td>
+                    <td><a href="/delete/{{todo.sno}}" class="btn btn-danger" role="button" aria-pressed="true">UPDATE</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+
+
+{% endblock %}
